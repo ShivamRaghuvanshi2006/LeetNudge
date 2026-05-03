@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --neo-bg: #FFFDF5;
+    --neo-black: #000000;
+    --neo-accent: #FF6B6B;
+    --neo-secondary: #FFD93D;
+    --neo-muted: #C4B5FD;
+  }
+
+  .dark {
+    --neo-bg: #111111;
+    --neo-black: #E5E5E5;
+    --neo-accent: #FF4D4D;
+    --neo-secondary: #E6C229;
+    --neo-muted: #8B5CF6;
+  }
+
+  .minimal {
+    --neo-bg: #FFFFFF;
+    --neo-black: #333333;
+    --neo-accent: #0066CC;
+    --neo-secondary: #F0F0F0;
+    --neo-muted: #E2E8F0;
+    --neo-shadow: transparent;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--neo-bg);
+    color: var(--neo-black);
+    background-image: radial-gradient(rgba(0,0,0,0.1) 1.5px, transparent 1.5px);
+    background-size: 20px 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark html, .dark body {
+    background-image: radial-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px);
+  }
+
+  .minimal html, .minimal body {
+    background-image: none !important;
+  }
+  
+  .minimal * {
+    border-width: 1px !important;
+    border-radius: 4px !important;
+    --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    --tw-shadow-color: transparent !important;
+    text-transform: none !important;
+  }
+
+  ::-webkit-scrollbar { width: 12px; border-left: 2px solid var(--neo-black); }
+  ::-webkit-scrollbar-track { background: var(--neo-bg); }
+  ::-webkit-scrollbar-thumb { background: var(--neo-accent); border: 2px solid var(--neo-black); }
+  
+  ::selection { background: var(--neo-secondary); color: var(--neo-black); }
+}
+
+@layer utilities {
+  .text-stroke {
+    -webkit-text-stroke: 2px theme('colors.neo.black');
+    color: transparent;
+  }
+  .focus-neo {
+    @apply focus-visible:outline-none focus-visible:ring-0 focus-visible:bg-neo-secondary focus-visible:shadow-neo-sm;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Animations */
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); opacity: 1; }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 3px); }
+  40% { transform: translate(3px, -3px); }
+  60% { transform: translate(-2px, -2px); }
+  80% { transform: translate(2px, 2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(2deg); }
+  75% { transform: translateY(5px) rotate(-1deg); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake-subtle {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 4s ease-in-out infinite;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.animate-glitch {
+  animation: glitch 0.3s ease-in-out;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out forwards;
+}
+
+.animate-shake-subtle {
+  animation: shake-subtle 0.4s ease-in-out;
+}
+
+/* ─── Code Sus Game Styles ──────────────────────────────────────── */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 40px rgba(239, 68, 68, 0.3); }
+}
+
+@keyframes sus-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.animate-glow-pulse { animation: glow-pulse 2s ease-in-out infinite; }
+.animate-sus-float { animation: sus-float 3s ease-in-out infinite; }
+
+/* Game code editor scrollbar */
+.game-editor::-webkit-scrollbar { width: 8px; }
+.game-editor::-webkit-scrollbar-track { background: #1e1e2e; }
+.game-editor::-webkit-scrollbar-thumb { background: #6B21A8; border-radius: 4px; }
+.game-editor::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+
+/* Draggable code blocks */
+[draggable="true"] {
+  cursor: grab;
+}
+[draggable="true"]:active {
+  cursor: grabbing;
+  opacity: 0.7;
+}
+
+#root {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ─── Gamified Arena Styles ──────────────────────────────────────── */
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  background-size: 100% 4px, 6px 100%;
+  z-index: 100;
+  opacity: 0.4;
+  animation: crtFlicker 0.15s infinite;
+}
+
+@keyframes crtFlicker {
+  0% { opacity: 0.35; } 50% { opacity: 0.4; } 100% { opacity: 0.35; }
+}
+
+@keyframes shake-hard {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-10px, -10px) rotate(-2deg); }
+  20% { transform: translate(10px, -5px) rotate(2deg); }
+  30% { transform: translate(-12px, 12px) rotate(-1deg); }
+  40% { transform: translate(10px, 10px) rotate(1deg); }
+  50% { transform: translate(-8px, -8px) rotate(-2deg); }
+  60% { transform: translate(8px, -5px) rotate(2deg); }
+  70% { transform: translate(-5px, 8px) rotate(-1deg); }
+  80% { transform: translate(5px, 5px) rotate(1deg); }
+  90% { transform: translate(-2px, -2px) rotate(0deg); }
+}
+.animate-shake-hard { animation: shake-hard 0.4s ease-out; }
+
+@keyframes flash-red {
+  0%, 100% { background-color: inherit; }
+  50% { background-color: #EF4444; }
+}
+.animate-flash { animation: flash-red 0.2s ease-in-out; }
+
+@keyframes combat-text {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  20% { opacity: 1; transform: translateY(-40px) scale(1.5); }
+  80% { opacity: 1; transform: translateY(-60px) scale(1); }
+  100% { opacity: 0; transform: translateY(-80px) scale(0.8); }
+}
+.animate-combat-text { animation: combat-text 1.5s ease-out forwards; }

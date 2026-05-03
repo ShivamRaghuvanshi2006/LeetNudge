@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Performance Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="tutorial-overlay" class="tutorial-overlay hidden">
+    <div class="tutorial-content card">
+      <h2 id="tutorial-title">Welcome to LeetNudge</h2>
+      <p id="tutorial-text">The ultimate productivity and tracking system for your coding journey.</p>
+      <div style="display: flex; gap: 16px; margin-top: 32px;">
+        <button class="btn btn-primary" id="btn-tutorial-next" style="font-size:18px;">Next Step</button>
+        <button class="btn" id="btn-tutorial-skip" style="background:#fff; color:#000; box-shadow:4px 4px 0px 0px #000; font-size:18px;">Skip Tutorial</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="login-screen" class="login-page">
+    <div class="login-box">
+      <h2 style="margin-bottom: 24px;">Welcome to LeetNudge</h2>
+      <input type="text" id="username" placeholder="USERNAME" style="width:calc(100% - 24px); padding: 12px; margin-bottom: 24px;">
+      <button class="btn btn-primary" id="btn-login" style="width:100%; padding: 16px;">Enter Dashboard</button>
+    </div>
+  </div>
+
+  <div id="main-dashboard" class="dashboard-container hidden">
+    <div class="sidebar">
+      <h2 style="margin-bottom: 30px;">LeetNudge</h2>
+      <div class="nav-item active" data-target="view-overview">Overview</div>
+      <div class="nav-item" data-target="view-dsa">DSA Sheets</div>
+      <div class="nav-item" data-target="view-social">Social</div>
+      <div class="nav-item" data-target="view-game">Game Mode</div>
+      <div style="flex:1"></div>
+      <button class="btn" id="btn-export" style="background:var(--color-orange); color:#000;">Export Excel</button>
+    </div>
+    
+    <div class="main-content">
+      <div id="view-overview" class="view-section">
+        <div class="panel grid grid-3" style="background: var(--color-accent);">
+          <div class="stat-box">
+            <div>Total Solved</div>
+            <div class="stat-value text-green">142</div>
+          </div>
+          <div class="stat-box" style="transform: rotate(2deg);">
+            <div>Current Streak</div>
+            <div class="stat-value text-orange">12</div>
+          </div>
+          <div class="stat-box" style="transform: rotate(-1deg);">
+            <div>Global Rank</div>
+            <div class="stat-value text-accent">#4021</div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="panel">
+            <h3>Activity Calendar</h3>
+            <div class="heatmap" id="heatmap"></div>
+          </div>
+          <div class="panel">
+            <h3>Topic Analysis</h3>
+            <div id="topic-analysis-container">
+               <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-dsa" class="view-section hidden">
+        <div class="panel" style="background:var(--color-orange);">
+          <h3>Structured Progress Sheets</h3>
+          <div class="sheet-tabs" id="sheet-tabs-container">
+             <!-- Populated by JS -->
+          </div>
+          
+          <div id="sheet-content">
+             <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div id="view-social" class="view-section hidden">
+        <div class="panel">
+          <h3>Leaderboard & Friends</h3>
+          <div id="social-content">
+            <div class="dsa-item">
+              <div style="font-size:18px;">User123 (Friend)</div>
+              <span class="text-accent" style="font-size:18px;">150 solved</span>
+            </div>
+            <div class="dsa-item">
+              <div style="font-size:18px;">CoderPro (Friend)</div>
+              <span class="text-accent" style="font-size:18px;">132 solved</span>
+            </div>
+          </div>
+          <button class="btn" style="margin-top:16px;">Add Friend</button>
+        </div>
+      </div>
+
+      <div id="view-game" class="view-section hidden section-transition">
+        <div id="game-start-view" class="panel" style="text-align: center; padding: 60px; background:var(--color-red); color:#fff; border:4px solid #000; box-shadow:8px 8px 0px 0px #000;">
+          <h2 style="font-size:32px;">Competitive Matchmaking</h2>
+          <p style="font-weight:700; font-size:18px; margin-bottom: 24px;">Match with an opponent in real-time. First to solve wins.</p>
+          <button class="btn btn-primary" id="btn-find-match" style="font-size: 1.5em; padding: 20px 40px; margin-top:24px; background:#fff; color:#000;">Find Match</button>
+        </div>
+        
+        <div id="game-searching-view" class="panel hidden" style="text-align: center; padding: 80px; background:var(--color-accent); color:#fff; border:4px solid #000; box-shadow:8px 8px 0px 0px #000;">
+          <h2 class="pulse-anim" style="font-size: 40px;">Searching Sector...</h2>
+          <div style="font-size: 24px; font-weight: 900; margin-top: 20px;" id="search-timer">00:00</div>
+        </div>
+
+        <div id="game-found-view" class="panel hidden" style="text-align: center; padding: 40px; background:var(--bg-dark); border:4px solid #000; box-shadow:8px 8px 0px 0px #000;">
+          <h3 style="margin-bottom: 32px; font-size:24px;">MATCH CONFIRMED</h3>
+          <div style="display:flex; justify-content: space-around; align-items:center;">
+             <div style="text-align:center;">
+               <div style="font-size:24px; font-weight:900;">YOU</div>
+               <div style="font-size:18px; color:var(--text-muted); font-weight:700;">142 Solved</div>
+             </div>
+             <h2 class="shake-anim text-red" style="font-size:48px; border:none; padding:0; margin:0; background:transparent;">VS</h2>
+             <div style="text-align:center;">
+               <div style="font-size:24px; font-weight:900;">CipherPunk</div>
+               <div style="font-size:18px; color:var(--text-muted); font-weight:700;">150 Solved</div>
+             </div>
+          </div>
+          <div id="match-countdown" class="pulse-anim" style="font-size: 64px; font-weight:900; margin-top:40px;">3</div>
+        </div>
+
+        <div id="game-active-view" class="panel hidden" style="background:#fff; border:4px solid #000; box-shadow:8px 8px 0px 0px #000; padding:32px;">
+          <div style="display:flex; justify-content: space-between; border-bottom: 4px solid #000; padding-bottom: 16px; margin-bottom: 16px;">
+            <div style="font-size: 24px; font-weight:900;">T-MINUS <span id="active-timer">00:00</span></div>
+            <div style="font-weight:900; font-size:20px;">TARGET: Valid Palindrome (EASY)</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-weight:700; font-size:18px;">
+             <div>SYSTEM (YOU): <span id="you-status" class="text-orange">Coding...</span></div>
+             <div>OPPONENT: <span id="opp-status" class="text-orange">Coding...</span></div>
+          </div>
+          <div style="margin-top:24px; padding:24px; background:var(--color-accent); border:4px solid #000; color:#fff; text-align:center;">
+             <textarea id="match-editor" style="width:100%; height:150px; background:#000; color:#fff; border:4px solid #fff; padding:16px; font-family:monospace; font-size:16px;" placeholder="// WRITE SOLUTION HERE -> PASTE = DISQUALIFY"></textarea>
+             <button id="btn-submit-match" class="btn" style="margin-top:24px; width:100%; padding:16px; font-size:18px; background:#fff; color:#000;">EXECUTe</button>
+          </div>
+        </div>
+        
+        <div id="game-result-view" class="panel hidden" style="text-align:center; padding:60px; background:var(--color-green); border:4px solid #000; box-shadow:8px 8px 0px 0px #000;">
+           <h2 id="match-result-title" class="pulse-anim" style="font-size:48px; color:#000; border:none; padding:0;">VICTORY</h2>
+           <p id="match-result-text" style="font-weight:900; font-size:24px; color:#000; background:transparent;">OPPONENT FAILED.</p>
+           <button class="btn" id="btn-back-dashboard" style="margin-top:32px; background:#fff; color:#000; padding:16px; font-size:18px;">RETURN TO HUB</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="dashboard.js"></script>
+</body>
+</html>

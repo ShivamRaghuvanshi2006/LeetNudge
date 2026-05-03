@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Performance Tracker",
+  "version": "1.0",
+  "description": "Premium coding tracker",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["*://leetcode.com/*", "*://*.leetcode.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://leetcode.com/*", "*://*.leetcode.com/*"],
+      "css": ["styles.css"],
+      "js": ["content.js", "overlay.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "dashboard.html",
+    "default_title": "Open Dashboard"
+  }
+}
