@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Github, Twitter, Linkedin } from 'lucide-react'
+import { Github, Twitter, Linkedin, MessageCircle } from 'lucide-react'
 import { playClick, playHover } from '../utils/sounds'
 
 const links = {
@@ -30,6 +30,8 @@ export default function Footer({ onShowToS }) {
             {[
               { icon: Github, href: 'https://github.com/ShivamRaghuvanshi2006', label: 'GitHub', color: 'hover:bg-neo-secondary' },
               { icon: Linkedin, href: 'https://www.linkedin.com/in/shivam-raghuvanshi-366669381/', label: 'LinkedIn', color: 'hover:bg-neo-muted' },
+              { icon: MessageCircle, href: 'https://discord.gg/mYmFcEeY3h', label: 'Discord', color: 'hover:bg-[#5865F2]' },
+              { icon: Github, href: 'https://github.com/VEERAJ-mark27', label: 'VEERAJ-GitHub', color: 'hover:bg-neo-accent' },
             ].map(({ icon: Icon, href, label, color }) => (
               <a key={label} href={href} id={`footer-${label.toLowerCase()}`} aria-label={label} target="_blank" rel="noreferrer"
                 onMouseEnter={playHover} onClick={playClick}

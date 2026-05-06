@@ -10,6 +10,7 @@ import SettingsView from './views/SettingsView';
 import InboxView from './views/InboxView';
 import ArenaView from './views/ArenaView';
 import WorkspaceView from './views/WorkspaceView';
+import AdminView from './views/AdminView';
 import RewardCalendar from './RewardCalendar';
 import RevisionSection from './RevisionSection';
 import SubscriptionModal from './SubscriptionModal';
@@ -119,9 +120,16 @@ export default function Dashboard({ onLogout, user }) {
   }, []);
 
   const [isExtensionConnected, setIsExtensionConnected] = useState(false);
-  const [isPremium, setIsPremium]   = useState(() => !!localStorage.getItem('ln_premium'));
+  const [isPremium, setIsPremium]   = useState(() => user?.isAdmin || !!localStorage.getItem('ln_premium'));
   const [showPaywall, setShowPaywall] = useState(false);
   const [showToS, setShowToS]         = useState(false);
+
+  // Sync isPremium if user is Admin
+  useEffect(() => {
+    if (user?.isAdmin && !isPremium) {
+      setIsPremium(true);
+    }
+  }, [user, isPremium]);
 
   const handleSubscribe = () => {
     localStorage.setItem('ln_premium', 'true');
@@ -207,6 +215,15 @@ export default function Dashboard({ onLogout, user }) {
               {t.id === 'game' && <span className="ml-auto text-[10px] bg-[#EF4444] text-white px-1.5 py-0.5 font-black">ARENA</span>}
             </div>
           ))}
+
+          {user?.isAdmin && (
+            <div onClick={() => { setView('admin'); playNav(); }}
+              className={`p-3 cursor-pointer border-4 border-black font-black uppercase transition-all shadow-[4px_4px_0px_#000] hover:-translate-y-1 hover:shadow-[6px_6px_0px_#000] flex items-center gap-3 text-sm mt-8
+                ${view === 'admin' ? 'bg-[#8b5cf6] text-white translate-y-1 shadow-none' : 'bg-black text-[#8b5cf6]'}`}>
+              <ShieldAlert size={18} />
+              <span>Admin Panel</span>
+            </div>
+          )}
         </div>
 
         {/* Upgrade + Logout */}
@@ -262,6 +279,7 @@ export default function Dashboard({ onLogout, user }) {
           {view === 'inbox'     && <InboxView isAdmin={!!user?.isAdmin} />}
           {view === 'workspace' && <WorkspaceView currentUser={profile} />}
           {view === 'game'      && <ArenaView currentUser={profile} onBack={() => { setView('overview'); playNav(); }} />}
+          {view === 'admin'     && <AdminView />}
           {view === 'settings'  && (
             <SettingsView
               profile={profile}
