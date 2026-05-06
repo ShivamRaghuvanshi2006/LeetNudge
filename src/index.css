@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  :root, [data-theme="default"] {
     --neo-bg: #FFFDF5;
     --neo-black: #000000;
     --neo-accent: #FF6B6B;
@@ -13,15 +13,15 @@
     --neo-muted: #C4B5FD;
   }
 
-  .dark {
-    --neo-bg: #111111;
-    --neo-black: #E5E5E5;
-    --neo-accent: #FF4D4D;
-    --neo-secondary: #E6C229;
+  [data-theme="neon"] {
+    --neo-bg: #09090b;
+    --neo-black: #00ff88;
+    --neo-accent: #ff0080;
+    --neo-secondary: #0080ff;
     --neo-muted: #8B5CF6;
   }
 
-  .minimal {
+  [data-theme="minimal"] {
     --neo-bg: #FFFFFF;
     --neo-black: #333333;
     --neo-accent: #0066CC;
@@ -29,6 +29,23 @@
     --neo-muted: #E2E8F0;
     --neo-shadow: transparent;
   }
+
+  [data-theme="sakura"] {
+    --neo-bg: #fff0f5;
+    --neo-black: #4a2f3a;
+    --neo-accent: #ff69b4;
+    --neo-secondary: #ffb7c5;
+    --neo-muted: #ffc0cb;
+  }
+
+  [data-theme="ocean"] {
+    --neo-bg: #e0f2fe;
+    --neo-black: #082f49;
+    --neo-accent: #0284c7;
+    --neo-secondary: #38bdf8;
+    --neo-muted: #7dd3fc;
+  }
+
 
   html, body {
     margin: 0;

@@ -21,6 +21,12 @@ export default function App() {
   const [user, setUser] = useState(() => {
     try { return JSON.parse(localStorage.getItem('leetnudge_user')); } catch { return null; }
   })
+
+  useEffect(() => {
+    const theme = localStorage.getItem('ln_theme') || 'default';
+    document.documentElement.setAttribute('data-theme', theme);
+  }, []);
+
   const [showLogin, setShowLogin] = useState(false)
   const [showToS, setShowToS] = useState(false)
   const [loginMode, setLoginMode] = useState('user') // 'user' or 'admin'

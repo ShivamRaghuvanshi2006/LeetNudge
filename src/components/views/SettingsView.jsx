@@ -1,7 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Save, Trash2, Crown, User, FileText, RefreshCw, Palette, Search } from 'lucide-react';
+import { Save, Trash2, Crown, User, FileText, RefreshCw, Palette, Search, Volume2, Bell, Monitor } from 'lucide-react';
 import { playClick, playSuccess, playError } from '../../utils/sounds';
 import { getProgressionState, equipCosmetic } from '../../utils/progressionStore';
+
+// ── Theme definitions ──────────────────────────────────────
+const THEMES = [
+  { id: 'default', name: 'Cyberpunk',  desc: 'Loud & Proud',    preview: ['#8b5cf6','#FFD93D','#4ade80'], emoji: '⚡' },
+  { id: 'neon',    name: 'Neon',       desc: 'Dark & Electric', preview: ['#00ff88','#ff0080','#0080ff'], emoji: '🌐' },
+  { id: 'minimal', name: 'Minimal',    desc: 'Clean & Focused', preview: ['#000000','#ffffff','#f5f5f5'], emoji: '⬜' },
+  { id: 'sakura',  name: 'Sakura',     desc: 'Soft & Serene',   preview: ['#ffb7c5','#ff69b4','#fff0f5'], emoji: '🌸' },
+  { id: 'ocean',   name: 'Ocean',      desc: 'Deep & Calm',     preview: ['#0ea5e9','#06b6d4','#e0f2fe'], emoji: '🌊' },
+];
+
+function applyTheme(themeId) {
+  document.documentElement.setAttribute('data-theme', themeId);
+  localStorage.setItem('ln_theme', themeId);
+}
 
 const pfpOptions = [
   "https://api.dicebear.com/7.x/bottts/svg?seed=Cyber",
@@ -21,6 +35,7 @@ export default function SettingsView({ profile, onUpdateProfile, isPremium, onSh
   const [selectedPfp, setSelectedPfp] = useState(profile.pfp || pfpOptions[0]);
   const [saved, setSaved] = useState(false);
   const [progression, setProgression] = useState(getProgressionState());
+  const [activeTheme, setActiveTheme] = useState(() => localStorage.getItem('ln_theme') || 'default');
 
   const handleSave = () => {
     playSuccess();
@@ -124,37 +139,76 @@ export default function SettingsView({ profile, onUpdateProfile, isPremium, onSh
         </div>
       </div>
 
-      {/* Interface Preferences */}
+      {/* ── Theme Switcher ── */}
       <div className="bg-white border-4 border-black shadow-[10px_10px_0px_#4ade80] p-8">
         <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-4 flex items-center gap-3">
-          <Palette size={24} /> Interface Preferences
+          <Palette size={24} /> UI Themes
         </h3>
-        
-        <div className="mb-6">
-          <label className="font-black uppercase text-sm tracking-wider mb-3 block">Color Theme</label>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="border-4 border-black p-4 text-center cursor-pointer hover:-translate-y-1 hover:shadow-[4px_4px_0px_#000] transition-all bg-[#FFD93D]" onClick={playClick}>
-              <h4 className="font-black uppercase text-lg">Cyberpunk</h4>
-              <p className="text-sm font-bold opacity-80 mt-1">Loud & Proud</p>
-            </div>
-            <div className="border-4 border-black p-4 text-center cursor-pointer hover:-translate-y-1 hover:shadow-[4px_4px_0px_#000] transition-all bg-white" onClick={playClick}>
-              <h4 className="font-black uppercase text-lg">Minimalist</h4>
-              <p className="text-sm font-bold opacity-80 mt-1">Clean & Focused</p>
-            </div>
-          </div>
+        <div className="grid grid-cols-5 gap-3">
+          {THEMES.map(t => (
+            <button
+              key={t.id}
+              onClick={() => { playClick(); setActiveTheme(t.id); applyTheme(t.id); }}
+              className={`flex flex-col items-center p-4 border-4 border-black transition-all
+                ${activeTheme === t.id
+                  ? 'shadow-none translate-y-1 bg-[#FFD93D]'
+                  : 'shadow-[4px_4px_0px_#000] hover:-translate-y-1 bg-white'}`}
+            >
+              <span className="text-2xl mb-2">{t.emoji}</span>
+              <div className="flex gap-1 mb-2">
+                {t.preview.map((c, i) => (
+                  <div key={i} className="w-4 h-4 border border-black rounded-sm" style={{ backgroundColor: c }} />
+                ))}
+              </div>
+              <span className="font-black text-xs uppercase text-center">{t.name}</span>
+              <span className="text-xs opacity-60 font-bold text-center">{t.desc}</span>
+            </button>
+          ))}
         </div>
+      </div>
 
-        <div>
-          <h4 className="font-black uppercase text-sm tracking-wider mb-4 block">Dashboard Tweaks</h4>
-          <div className="flex items-center gap-4 justify-between border-4 border-black p-4 mb-3 hover:bg-neo-bg transition-colors">
-            <span className="font-bold">Animations & Particles</span>
-            <input type="checkbox" defaultChecked onChange={playClick} className="w-6 h-6 border-2 border-black accent-black cursor-pointer" />
-          </div>
-          <div className="flex items-center gap-4 justify-between border-4 border-black p-4 hover:bg-neo-bg transition-colors">
-            <span className="font-bold">High Contrast Mode</span>
-            <input type="checkbox" onChange={playClick} className="w-6 h-6 border-2 border-black accent-black cursor-pointer" />
-          </div>
+      {/* ── Sound Pack ── */}
+      <div className="bg-white border-4 border-black shadow-[10px_10px_0px_#8b5cf6] p-8">
+        <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-4 flex items-center gap-3">
+          <Volume2 size={24} /> Sound Pack
+        </h3>
+        <div className="grid grid-cols-3 gap-4">
+          {['Cyberpunk 🤖','Retro 👾','Nature 🌿'].map((pack, i) => (
+            <button
+              key={pack}
+              onClick={playClick}
+              className={`p-4 border-4 border-black font-black uppercase text-sm transition-all hover:-translate-y-1
+                ${i === 0 ? 'bg-[#8b5cf6] text-white shadow-[4px_4px_0px_#000]' : 'bg-white shadow-[4px_4px_0px_#000]'}`}
+            >
+              {pack}
+              {i === 0 && <div className="text-xs mt-1 opacity-80 font-bold normal-case">Active</div>}
+            </button>
+          ))}
         </div>
+        <div className="mt-4 flex items-center justify-between border-4 border-black p-4">
+          <span className="font-bold">Ambient Sound</span>
+          <input type="checkbox" defaultChecked onChange={playClick} className="w-6 h-6 border-2 border-black accent-black cursor-pointer" />
+        </div>
+      </div>
+
+      {/* ── Notifications ── */}
+      <div className="bg-white border-4 border-black shadow-[10px_10px_0px_#FFD93D] p-8">
+        <h3 className="text-2xl font-black uppercase mb-6 border-b-4 border-black pb-4 flex items-center gap-3">
+          <Bell size={24} /> Notifications
+        </h3>
+        {[
+          { label: 'Streak reminders', default: true },
+          { label: 'Friend activity alerts', default: true },
+          { label: 'Daily quest nudges', default: true },
+          { label: 'Milestone celebrations', default: true },
+          { label: 'Weekly progress digest', default: false },
+        ].map(item => (
+          <div key={item.label} className="flex items-center justify-between border-4 border-black p-4 mb-3 hover:bg-neo-bg transition-colors">
+            <span className="font-bold">{item.label}</span>
+            <input type="checkbox" defaultChecked={item.default} onChange={playClick}
+              className="w-6 h-6 border-2 border-black accent-black cursor-pointer" />
+          </div>
+        ))}
       </div>
 
       {/* Subscription Status */}
